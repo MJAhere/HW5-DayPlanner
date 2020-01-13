@@ -11,21 +11,3 @@ body {
     text-align: center;
 }
 
-.time-block {
-    text-align: center;
-    border-radius: 15px;
-}
-
-.row {
-    white-space: pre-wrap;
-    height: 80px;
-    border-top: 1px solid white;
-}
-
-.hour {
-    background-color: white;
-    color: black;
-    border-top: 1px dashed black;
-}
-
-.past

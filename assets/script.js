@@ -1,4 +1,4 @@
-var myDay = [
+var thisDay = [
     {
         id: "0",
         hour: "09",
@@ -64,4 +64,37 @@ var myDay = [
     },
     
 ]
+ //data for header
+function getHeaderDate() {
+    var currentHeaderDate = moment().format('dddd,MMMM Do');
+    $("#currentDay").text(currentHeaderDate);
+}
+
+
+function saveReminders() {
+    localStorage.setItem("myDay", JSON.stringify(myDay));
+}
+
+
+function displayReminders() {
+    myDay.forEach(function (_thisHour) {
+        $(`#${_thisHour.id}`).val(_thisHour.reminder);
+    })
+}
+
+//local storage to view
+function init() {
+    var storedDay = JSON.parse(localStorage.getItem("myDay"));
+
+    if (storedDay) {
+        myDay = storedDay;
+    }
+
+    saveReminders();
+    displayReminders();
+}
+
+//header 
+getHeaderDate();
+
 
