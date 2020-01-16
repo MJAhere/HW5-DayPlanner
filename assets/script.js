@@ -1,5 +1,4 @@
-var thisDay = [
-    {
+var myDay = [{
         id: "0",
         hour: "09",
         time: "09",
@@ -62,9 +61,9 @@ var thisDay = [
         meridiem: "pm",
         reminder: ""
     },
-    
+
 ]
- //data for header
+//data for header
 function getHeaderDate() {
     var currentHeaderDate = moment().format('dddd,MMMM Do');
     $("#currentDay").text(currentHeaderDate);
@@ -94,7 +93,67 @@ function init() {
     displayReminders();
 }
 
-//header 
+
 getHeaderDate();
 
 
+// creates the visuals for the scheduler body
+myDay.forEach(function (thisHour) {
+    // timeblocks
+    var hourRow = $("<form>").attr({
+        "class": "row"
+    });
+    $(".container").append(hourRow);
+
+    // time
+    var hourField = $("<div>")
+        .text(`${thisHour.hour}${thisHour.meridiem}`)
+        .attr({
+            "class": "col-md-2 hour"
+        });
+
+    // schdeduler data
+    var hourPlan = $("<div>")
+        .attr({
+            "class": "col-md-9 description p-0"
+        });
+    var planData = $("<textarea>");
+    hourPlan.append(planData);
+    planData.attr("id", thisHour.id);
+    if (thisHour.time < moment().format("HH")) {
+        planData.attr({
+            "class": "past",
+        })
+    } else if (thisHour.time === moment().format("HH")) {
+        planData.attr({
+            "class": "present"
+        })
+    } else if (thisHour.time > moment().format("HH")) {
+        planData.attr({
+            "class": "future"
+        })
+    }
+
+    // creates save button
+    var saveButton = $("<i class='far fa-save fa-lg'></i>")
+    var savePlan = $("<button>")
+        .attr({
+            "class": "col-md-1 saveBtn"
+        });
+    savePlan.append(saveButton);
+    hourRow.append(hourField, hourPlan, savePlan);
+})
+
+// load local storage
+init();
+
+
+// saves for localStorage
+$(".saveBtn").on("click", function (event) {
+    event.preventDefault();
+    var saveIndex = $(this).siblings(".description").children(".future").attr("id");
+    myDay[saveIndex].reminder = $(this).siblings(".description").children(".future").val();
+    console.log(saveIndex);
+    saveReminders();
+    displayReminders();
+})
